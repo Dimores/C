@@ -1,55 +1,52 @@
-/*
-Faça o comando mygrep. 
-Ele procura por uma string dentro do arquivo e exibe a linha encontrada.  
-Capte os parâmetros em linha de comando: 
-mygrep texto arquivo. 
-Teste o programa em linha de comando e verifique se ele mostra na saída 
-padrão a 
-1 - linha da ocorrência. 
-Submeta seu algoritmo aqui!
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-//Função que faz a abertura do arquivo
-FILE *Fopen(const char *filename, const char *mode){
-    FILE *fp; //Ponteiro para o arquivo
-
-    if ((fp = fopen(filename, mode)) == NULL) { //Caso não seja passa arquivo como parâmetro, e nem se é para leitura ou escrita
-        printf("Erro ao abrir o arquivo\n");
-        exit(EXIT_FAILURE);   //Execucao mal sucedida, finaliza o programa
-
-    }
-    return fp; //Retorna o endereço do arquivo
-}
+//Constante definida como maximo de caracteres de uma frase.
+#define MAX_TAM_FRASE 10000
 
 int main(int argc, char **argv){
 
-    const size_t BUFSIZE = 8192;  //Declarando o buffer como constante
+    //Criacao e abertura do arquivo de texto.
+    FILE *arquivo;
 
-    FILE *arquivo = Fopen(argv[2], "rt");  //Ponteiros para o arquivo fonte e de destino, respectivamente
-    char buf[BUFSIZE];  //Vetor de char para funcao fread
-    
-    char c;
-    char *palavra = argv[1];     //Variável que vai receber o retorno da funcao fread
-    char frase_atual[BUFSIZE];
-    int cont_linha = 1, cont_tam_frase = 0;
-    char* find;
+    // Verifica se o arquivo foi aberto com sucesso no modo leitura de texto.
+    if((arquivo = fopen(argv[2], "rt")) == NULL){
+        printf("Erro ao abrir o arquivo!\n");
+        exit(EXIT_FAILURE);
+    }
+     
+    //Armazenamento da palavra que vai ser procurada.
+    char *palavra = argv[1];
+
+    //String que vai armazena as frases do texto, com tamanho maximo definido pela contante.
+    char frase_atual[MAX_TAM_FRASE];
+
+    //Ponteiro de char, vai ser usado posteriomente para verificar se a substring esta contida na string.
+    char *ocorrencia;
+
+    //Contador de linha.
     int linha_atual = 1;
 
+    //Loop responsavel pela leitura de todas as frases, uma a cada ciclo.
     while (!feof(arquivo)){
-        fgets(frase_atual, BUFSIZE, arquivo);
+        
+        //funcao que pega do arquivo a frase completa.
+        fgets(frase_atual, MAX_TAM_FRASE, arquivo);
 
-        find = strstr(frase_atual, palavra);
+        //strstr e uma funcao que verifica se uma string esta contida em outra, caso falso retornara NULL.
+        ocorrencia = strstr(frase_atual, palavra);
 
-        if(find){
+        //Caso ocorrencia seja diferente de NULL, significa que foi encontrada a string na linha, logo deverá ser exibida na tela.
+        if(ocorrencia){
             printf("Linha %d: %s", linha_atual, frase_atual);
         }
-        find = "";
+
+        //acrecimo na contagem da linha.
         linha_atual++;
     }
+
+    //Apos a execução do programa, e feito o fechamento do arquivo.
     fclose(arquivo);
 
     return 0;
