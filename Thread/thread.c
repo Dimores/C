@@ -8,7 +8,6 @@ e a thread t2 analisa se o resultado da soma é par ou ímpar.
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>  //Biblioteca que contem o sleep()
 
 int soma; //Variavel global para ambas as Threads acessarem
 
@@ -32,7 +31,6 @@ void *compara(void *arg) {
     int *sum = (int*)(arg);
 
     //Verificar se e par ou impar
-    sleep(1); //Espera 1 segundo
     if(soma%2 == 0){ //Verifica se a soma e divisivel por 2
         printf("\nO resultado da soma e par!");
     }else{
