@@ -16,7 +16,6 @@ int soma; //Variavel global para ambas as Threads acessarem
 void *function(void *arg) {
     int *valor = (int*)(arg); //Converte o argumento para ponteiro de inteiro
 
-    if(*valor != -1){ //Se o conteudo de valor nao for 123456789
         printf("\nValor = %d", valor[0]); //Imprime na tela
 
         //Execucao Thread 1
@@ -26,18 +25,19 @@ void *function(void *arg) {
 
         printf("\nSoma = %d", soma); //Imprime o resultado
 
-    //Entra no else quando o valor o argumento for 123456789
-    }else{
-        sleep(1); //Espera 1 segundo
-        if(soma%2 == 0){ //Verifica se a soma e divisivel por 2
-            printf("\nO resultado da soma e par!");
-        }else{
-            printf("\nO resultado da soma e impar!");
-        }
-    }
-
-
     return NULL;
+}
+
+void *compara(void *arg) {
+    int *sum = (int*)(arg);
+
+    //Verificar se e par ou impar
+    sleep(1); //Espera 1 segundo
+    if(soma%2 == 0){ //Verifica se a soma e divisivel por 2
+        printf("\nO resultado da soma e par!");
+    }else{
+        printf("\nO resultado da soma e impar!");
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -51,11 +51,8 @@ int main(int argc, char *argv[]) {
 
     int b = atoi(a);  //Convertendo o numero digitado para inteiro
 
-    //Parametro segunda thread
-    int c = -1; //Numero especifico que so vai funcionar para segundo thread
-
     pthread_create(&t1, NULL, function, (void *)(&b)); //Criando primeira thread
-    pthread_create(&t2, NULL, function, (void *)(&c)); //Criando segunda thread     
+    pthread_create(&t2, NULL, compara, (void *)(&soma)); //Criando segunda thread     
 
     //Thread 2 espera a Thread 1 executar para depois executar
     pthread_join(t1, NULL);     
