@@ -16,7 +16,7 @@ int soma; //Variavel global para ambas as Threads acessarem
 void *function(void *arg) {
     int *valor = (int*)(arg); //Converte o argumento para ponteiro de inteiro
 
-    if(*valor != 123456789){ //Se o conteudo de valor nao for 123456789
+    if(*valor != -1){ //Se o conteudo de valor nao for 123456789
         printf("\nValor = %d", valor[0]); //Imprime na tela
 
         //Execucao Thread 1
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     int b = atoi(a);  //Convertendo o numero digitado para inteiro
 
     //Parametro segunda thread
-    int c = 123456789; //Numero especifico que so vai funcionar para segundo thread
+    int c = -1; //Numero especifico que so vai funcionar para segundo thread
 
     pthread_create(&t1, NULL, function, (void *)(&b)); //Criando primeira thread
     pthread_create(&t2, NULL, function, (void *)(&c)); //Criando segunda thread     
