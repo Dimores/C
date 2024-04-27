@@ -1,2 +1,2 @@
 # C
-Somente códigos em C(Não é C++)
+Somente códigos em C
